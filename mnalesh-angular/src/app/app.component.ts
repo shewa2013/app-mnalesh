@@ -4,7 +4,10 @@ import { Router } from '@angular/router';
 import { AuthenticationService } from './services/authentication.service';
 import { User } from './modules/user/user.module';
 
-@Component({ selector: 'app', templateUrl: 'app.component.html' })
+@Component({
+   selector: 'app-root', 
+   templateUrl: 'app.component.html'
+   })
 export class AppComponent {
     currentUser: User;
 
