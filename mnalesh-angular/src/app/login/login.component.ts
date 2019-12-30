@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { first } from 'rxjs/operators';
+import { User } from '../modules/user/user.module';
 
 import { AuthenticationService } from '../services/authentication.service';
 
@@ -14,6 +15,7 @@ export class LoginComponent implements OnInit {
     submitted = false;
     returnUrl: string;
     error = '';
+    user:User;
 
     constructor(
         private formBuilder: FormBuilder,
@@ -29,7 +31,7 @@ export class LoginComponent implements OnInit {
 
     ngOnInit() {
         this.loginForm = this.formBuilder.group({
-            username: ['', Validators.required],
+            ssoId: ['', Validators.required],
             password: ['', Validators.required]
         });
 
@@ -38,9 +40,9 @@ export class LoginComponent implements OnInit {
     }
 
     // convenience getter for easy access to form fields
-    get f() { return this.loginForm.controls; }
+    get formControls() { return this.loginForm.controls; }
 
-    onSubmit() {
+    login() {
         this.submitted = true;
 
         // stop here if form is invalid
@@ -49,7 +51,8 @@ export class LoginComponent implements OnInit {
         }
 
         this.loading = true;
-        this.authenticationService.login(this.f.username.value, this.f.password.value)
+this.user=this.loginForm.value;
+        this.authenticationService.login(this.user)
             .pipe(first())
             .subscribe(
                 data => {
